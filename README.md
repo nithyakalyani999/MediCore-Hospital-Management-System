@@ -193,19 +193,63 @@ MediCore
       └── MediCore.sql
 ```
 
+# 🔒 Session Management
+
+The application uses HTTP Sessions to:
+
+- Maintain logged-in user information.
+- Store patient details.
+- Store doctor information.
+- Preserve authentication state.
+- Display appointment confirmation data.
+
 ---
 
-# 💾 Database Design
+# 🛠️ Technologies Used
+
+## Backend
+
+- Java
+- JDBC
+- Java Servlets
+
+## Frontend
+
+- HTML5
+- CSS3
+- JavaScript
 
 ## Database
 
-```sql
-CREATE DATABASE MediCore;
+- MySQL
+
+## Web Server
+
+- Apache Tomcat 9+
+
+## IDE
+
+- Eclipse IDE
+
+---
+
+# ⚙️ Setup Instructions
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/yourusername/MediCore-Hospital-Management-System.git
 ```
 
 ---
 
-## Table: userData
+## 2. Create Database
+
+Run:
+
+```sql
+CREATE DATABASE MediCore;
+```
 
 Stores patient information.
 
@@ -275,167 +319,6 @@ CREATE TABLE adminData(
     userName VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL
 );
-```
-
----
-
-# 🔑 Authentication Flow
-
-## Patient Login
-
-```text
-Patient Login Page
-        │
-        ▼
-UserLoginServlet
-        │
-        ▼
-UserDao
-        │
-        ▼
-Database Validation
-        │
-        ▼
-User Dashboard
-```
-
----
-
-## Doctor Login
-
-```text
-Doctor Login Page
-        │
-        ▼
-DoctorLoginServlet
-        │
-        ▼
-DoctorDao
-        │
-        ▼
-Database Validation
-        │
-        ▼
-Doctor Dashboard
-```
-
----
-
-## Admin Login
-
-```text
-Admin Login Page
-        │
-        ▼
-AdminLoginServlet
-        │
-        ▼
-Database Validation
-        │
-        ▼
-Admin Dashboard
-```
-
----
-
-# 📅 Appointment Booking Workflow
-
-```text
-Patient Dashboard
-        │
-        ▼
-Browse Doctors
-        │
-        ▼
-Select Doctor
-        │
-        ▼
-Choose Date & Time
-        │
-        ▼
-Check Slot Availability
-        │
-        ▼
-BookAppointmentServlet
-        │
-        ▼
-AppointmentDao
-        │
-        ▼
-Database Insert
-        │
-        ▼
-Appointment Confirmation
-```
-
----
-
-# 🔒 Session Management
-
-The application uses HTTP Sessions to:
-
-- Maintain logged-in user information.
-- Store patient details.
-- Store doctor information.
-- Preserve authentication state.
-- Display appointment confirmation data.
-
-Examples:
-
-```java
-session.setAttribute("username", username);
-session.setAttribute("fullName", patientName);
-```
-
----
-
-# 🛠️ Technologies Used
-
-## Backend
-
-- Java
-- JDBC
-- Java Servlets
-
-## Frontend
-
-- HTML5
-- CSS3
-- JavaScript
-
-## Database
-
-- MySQL
-
-## Web Server
-
-- Apache Tomcat 9+
-
-## IDE
-
-- Eclipse IDE
-
----
-
-# ⚙️ Setup Instructions
-
-## 1. Clone Repository
-
-```bash
-git clone https://github.com/yourusername/MediCore-Hospital-Management-System.git
-```
-
----
-
-## 2. Create Database
-
-Run:
-
-```sql
-CREATE DATABASE MediCore;
-```
-
-Import the provided SQL script.
 
 ---
 
@@ -502,7 +385,6 @@ This project demonstrates:
 # 👨‍💻 Author
 
 **S. Nithya Kalyani**
-
 Java Backend Developer
 
 ---
