@@ -1,6 +1,9 @@
 # MediCore Hospital Management System
 MediCore is a web-based Hospital Management System developed using Java Servlets, JDBC, MySQL, HTML, CSS, and JavaScript. The application provides role-based access control for Admins, Doctors, and Patients, allowing efficient management of appointments, patient records, doctor information, and healthcare operations.
 
+<img width="1279" height="653" alt="Screenshot 2026-06-25 020557" src="https://github.com/user-attachments/assets/82dfe685-ef04-4fef-8492-07e1d755d1b6" />
+
+
 ## 📌 Project Overview
 
 MediCore is a web-based Hospital Management System developed using Java Servlets, JDBC, MySQL, HTML, CSS, and JavaScript. The application is designed to simplify hospital operations by providing separate modules for Admins, Doctors, and Patients.
@@ -91,6 +94,9 @@ Patients can create an account by providing:
 - View personal details
 - Update profile information
 
+<img width="1279" height="655" alt="Screenshot 2026-06-25 020612" src="https://github.com/user-attachments/assets/84a883ce-c18c-4177-95a2-edf0a825d171" />
+
+
 #### Doctor Browsing
 - View available doctors
 - View doctor specializations
@@ -117,6 +123,9 @@ Patients can create an account by providing:
   - Appointment Date
   - Appointment Time
   - Booking Status
+
+  <img width="1279" height="653" alt="Screenshot 2026-06-25 021531" src="https://github.com/user-attachments/assets/3657dcb7-8501-4771-a0cb-2f4d36ef21b2" />
+
 
 ---
 
