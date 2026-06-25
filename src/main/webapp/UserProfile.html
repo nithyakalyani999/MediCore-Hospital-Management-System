@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediCore — Patient Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-50:  #e8f9f4;
+      --teal-100: #c0f0e0;
+      --teal-400: #0ec4a1;
+      --teal-600: #0a9a7e;
+      --teal-800: #065a49;
+      --teal-900: #0a3d30;
+      --border:   #d4f0e7;
+      --muted:    #5aaa90;
+      --faint:    #7ec7b7;
+      --amber:    #f59e0b;
+      --red:      #ef4444;
+      --blue:     #3b82f6;
+      --bg:       #f0f9f6;
+    }
+
+    html, body { min-height: 100vh; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--teal-900); }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 20px; height: 20px; fill: #fff; }
+    .logo-brand { font-size: 15px; font-weight: 600; color: var(--teal-600); }
+    .logo-sub   { font-size: 9px; color: var(--faint); letter-spacing: 1.5px; text-transform: uppercase; display: block; }
+
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .user-chip {
+      display: flex; align-items: center; gap: 9px;
+      background: var(--teal-50); border: 1px solid var(--border);
+      border-radius: 30px; padding: 5px 14px 5px 6px;
+      cursor: pointer;
+    }
+    .user-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+    }
+    .user-name { font-size: 13px; font-weight: 500; color: var(--teal-900); }
+    .logout-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 7px 14px;
+      font-size: 12.5px; font-weight: 500; color: var(--muted);
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all .2s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); background: #fef2f2; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; min-height: calc(100vh - 62px); }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 240px; min-width: 240px;
+      background: #fff;
+      border-right: 1px solid var(--border);
+      padding: 28px 16px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .sidebar-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--faint);
+      padding: 0 12px; margin: 12px 0 6px;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px; border-radius: 12px;
+      cursor: pointer; transition: all .2s;
+      font-size: 13.5px; font-weight: 500; color: var(--muted);
+      border: 1.5px solid transparent;
+    }
+    .sidebar-item i { font-size: 18px; }
+    .sidebar-item:hover { background: var(--teal-50); color: var(--teal-800); }
+    .sidebar-item.active {
+      background: var(--teal-50);
+      border-color: var(--border);
+      color: var(--teal-800);
+      font-weight: 600;
+    }
+    .sidebar-item.active i { color: var(--teal-400); }
+    .sidebar-item.danger { color: #ef9090; }
+    .sidebar-item.danger:hover { background: #fef2f2; color: var(--red); border-color: #fecaca; }
+
+    /* profile mini card in sidebar */
+    .sidebar-profile {
+      background: linear-gradient(135deg, var(--teal-900), var(--teal-600));
+      border-radius: 14px; padding: 18px 16px;
+      margin-bottom: 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      text-align: center;
+    }
+    .sp-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      border: 2.5px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700; color: #fff;
+    }
+    .sp-name  { font-size: 14px; font-weight: 600; color: #fff; }
+    .sp-email { font-size: 11px; color: rgba(255,255,255,.55); }
+    .sp-badge {
+      background: rgba(14,196,161,.25); border: 1px solid rgba(14,196,161,.4);
+      color: var(--teal-400); font-size: 10px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: .5px;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main { flex: 1; padding: 32px 36px; overflow-y: auto; }
+
+    /* page title */
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; font-weight: 700; color: var(--teal-900);
+      margin-bottom: 4px;
+    }
+    .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+    /* ── PANELS ── */
+    .panel { display: none; animation: fadeUp .3s ease both; }
+    .panel.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PROFILE PANEL ── */
+    .profile-card {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 20px; overflow: hidden; max-width: 680px;
+    }
+    .profile-banner {
+      height: 100px;
+      background: linear-gradient(135deg, var(--teal-900), var(--teal-600));
+      position: relative;
+    }
+    .profile-banner-avatar {
+      position: absolute; bottom: -36px; left: 28px;
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      border: 4px solid #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 700; color: #fff;
+    }
+    .profile-body { padding: 48px 28px 28px; }
+    .profile-name-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .profile-name  { font-size: 20px; font-weight: 700; color: var(--teal-900); }
+    .profile-role  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .edit-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--teal-50); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 8px 16px;
+      font-size: 12.5px; font-weight: 500; color: var(--teal-800);
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all .2s;
+    }
+    .edit-btn:hover { border-color: var(--teal-400); background: var(--teal-100); }
+
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px 28px;
+    }
+    .info-item { display: flex; flex-direction: column; gap: 4px; }
+    .info-label {
+      font-size: 10.5px; font-weight: 600; letter-spacing: .8px;
+      text-transform: uppercase; color: var(--faint);
+    }
+    .info-value {
+      font-size: 14px; font-weight: 500; color: var(--teal-900);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .info-value i { color: var(--teal-400); font-size: 15px; }
+
+    /* ── APPOINTMENTS PANEL ── */
+    .apt-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+    }
+    .apt-count {
+      background: var(--teal-50); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 14px;
+      font-size: 12px; font-weight: 600; color: var(--teal-800);
+    }
+
+    .apt-table-wrap {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 18px; overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--teal-50); }
+    thead th {
+      padding: 14px 18px; text-align: left;
+      font-size: 11px; font-weight: 600; letter-spacing: .8px;
+      text-transform: uppercase; color: var(--teal-800);
+    }
+    tbody tr { border-top: 1px solid var(--border); transition: background .15s; }
+    tbody tr:hover { background: #fafffe; }
+    tbody td { padding: 14px 18px; font-size: 13.5px; color: var(--teal-900); }
+    .td-doctor { font-weight: 600; color: var(--teal-800); }
+    .td-spec {
+      display: inline-block; background: var(--teal-50); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 11px;
+      font-size: 11.5px; font-weight: 500; color: var(--teal-600);
+    }
+    .td-date { color: var(--muted); font-size: 13px; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      border-radius: 20px; padding: 4px 12px; font-size: 11.5px; font-weight: 600;
+    }
+    .status-confirmed { background: #dcfce7; color: #15803d; }
+    .status-pending   { background: #fef9c3; color: #a16207; }
+    .status-cancelled { background: #fee2e2; color: #dc2626; }
+
+    .empty-state {
+      padding: 56px 24px; text-align: center;
+    }
+    .empty-icon { font-size: 44px; color: var(--teal-100); margin-bottom: 12px; }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--teal-900); margin-bottom: 6px; }
+    .empty-sub   { font-size: 13px; color: var(--muted); }
+
+    /* ── BOOK APPOINTMENT PANEL ── */
+    .book-intro {
+      background: linear-gradient(135deg, var(--teal-900), var(--teal-800));
+      border-radius: 18px; padding: 28px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; gap: 20px; flex-wrap: wrap;
+    }
+    .book-intro-text .bi-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px;
+    }
+    .book-intro-text .bi-sub { font-size: 13px; color: rgba(255,255,255,.6); }
+    .bi-icon { font-size: 52px; color: rgba(14,196,161,.4); }
+
+    /* search bar */
+    .search-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 0 16px;
+      margin-bottom: 20px;
+    }
+    .search-bar i { color: var(--faint); font-size: 17px; }
+    .search-bar input {
+      flex: 1; border: none; outline: none; height: 44px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--teal-900); background: transparent;
+    }
+    .search-bar input::placeholder { color: #b0d4ca; }
+
+    /* doctors grid */
+    .doctors-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .doctor-card {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 20px 18px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: all .2s; cursor: pointer;
+    }
+    .doctor-card:hover { border-color: var(--teal-400); box-shadow: 0 8px 28px rgba(14,196,161,.12); transform: translateY(-3px); }
+    .dr-avatar-wrap { display: flex; align-items: center; gap: 12px; }
+    .dr-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: #fff;
+    }
+    .dr-info .dr-name { font-size: 14px; font-weight: 600; color: var(--teal-900); }
+    .dr-info .dr-spec {
+      font-size: 11.5px; color: var(--muted);
+      display: flex; align-items: center; gap: 4px; margin-top: 2px;
+    }
+    .dr-avail {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #15803d;
+      background: #dcfce7; border-radius: 8px; padding: 5px 10px;
+    }
+    .dr-avail i { font-size: 13px; }
+    .book-btn {
+      width: 100%; height: 38px;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      border: none; border-radius: 10px;
+      font-size: 13px; font-weight: 600; color: #fff;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: opacity .2s;
+    }
+    .book-btn:hover { opacity: .88; }
+
+    /* ── BOOKING MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(10,61,48,.45); backdrop-filter: blur(4px);
+      z-index: 200; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 22px;
+      padding: 32px 28px; width: 100%; max-width: 420px; margin: 16px;
+      position: relative; animation: popIn .25s ease;
+    }
+    @keyframes popIn { from { transform: scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--teal-50); border: none;
+      width: 30px; height: 30px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--teal-600); font-size: 16px; transition: background .2s;
+    }
+    .modal-close:hover { background: var(--teal-100); }
+    .modal-title { font-size: 18px; font-weight: 700; color: var(--teal-900); margin-bottom: 4px; }
+    .modal-sub   { font-size: 12.5px; color: var(--muted); margin-bottom: 24px; }
+    .modal-dr-chip {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--teal-50); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 14px; margin-bottom: 22px;
+    }
+    .modal-dr-chip .chip-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff;
+    }
+    .chip-name { font-size: 13.5px; font-weight: 600; color: var(--teal-900); }
+    .chip-spec { font-size: 11.5px; color: var(--muted); }
+
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field label { font-size: 12px; font-weight: 500; color: var(--teal-800); }
+    .field input {
+      height: 44px; border: 1.5px solid var(--border); border-radius: 11px;
+      padding: 0 14px; font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--teal-900); outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .field input:focus { border-color: var(--teal-400); box-shadow: 0 0 0 3px rgba(14,196,161,.1); }
+    .confirm-btn {
+      width: 100%; height: 46px;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      border: none; border-radius: 13px;
+      font-size: 14px; font-weight: 600; color: #fff;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: opacity .2s;
+    }
+    .confirm-btn:hover { opacity: .88; }
+
+    /* success state inside modal */
+    .booking-success {
+      display: none; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+    }
+    .booking-success.show { display: flex; }
+    .bs-icon {
+      width: 64px; height: 64px; background: var(--teal-50);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 30px; color: var(--teal-400); border: 2px solid var(--teal-100);
+    }
+    .bs-title { font-size: 18px; font-weight: 700; color: var(--teal-900); }
+    .bs-details { background: var(--teal-50); border-radius: 12px; padding: 14px 18px; width: 100%; text-align: left; }
+    .bs-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+    .bs-row span:first-child { color: var(--muted); }
+    .bs-row span:last-child  { font-weight: 600; color: var(--teal-900); }
+    .bs-actions { display: flex; gap: 10px; width: 100%; }
+    .bs-btn {
+      flex: 1; height: 42px; border-radius: 11px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: opacity .2s;
+    }
+    .bs-btn-outline { background: #fff; border: 1.5px solid var(--border); color: var(--muted); }
+    .bs-btn-solid   { background: linear-gradient(135deg, var(--teal-400), var(--teal-600)); border: none; color: #fff; }
+    .bs-btn:hover { opacity: .88; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .sidebar { display: none; }
+      .main { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <a class="logo" href="index.html">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 14h-2v-4H7v-2h4V6h2v4h4v2h-4v4z"/></svg>
+    </div>
+    <div>
+      <span class="logo-brand">MediCore</span>
+      <span class="logo-sub">Hospital</span>
+    </div>
+  </a>
+  <div class="topbar-right">
+    <div class="user-chip">
+      <div class="user-avatar" id="top-avatar">S</div>
+      <span class="user-name" id="top-name">Sathish K</span>
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <i class="ti ti-logout"></i> Logout
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <!-- mini profile -->
+    <div class="sidebar-profile">
+      <div class="sp-avatar" id="sp-avatar">S</div>
+      <div class="sp-name"  id="sp-name">Sathish K</div>
+      <div class="sp-email" id="sp-email">sathish@email.com</div>
+      <div class="sp-badge">Patient</div>
+    </div>
+
+    <div class="sidebar-label">Menu</div>
+    <div class="sidebar-item active" onclick="showPanel('profile')" id="nav-profile">
+      <i class="ti ti-user"></i> My Profile
+    </div>
+    <div class="sidebar-item" onclick="showPanel('appointments')" id="nav-appointments">
+      <i class="ti ti-calendar"></i> My Appointments
+    </div>
+    <div class="sidebar-item" onclick="showPanel('book')" id="nav-book">
+      <i class="ti ti-calendar-plus"></i> Book Appointment
+    </div>
+
+    <div class="sidebar-label">Account</div>
+    <div class="sidebar-item danger" onclick="logout()">
+      <i class="ti ti-logout"></i> Logout
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+
+    <!-- ════ PROFILE PANEL ════ -->
+    <div class="panel active" id="panel-profile">
+      <div class="page-title">My Profile</div>
+      <div class="page-sub">Your personal information and account details.</div>
+
+      <div class="profile-card">
+        <div class="profile-banner">
+          <div class="profile-banner-avatar" id="prof-avatar">S</div>
+        </div>
+        <div class="profile-body">
+          <div class="profile-name-row">
+            <div>
+              <div class="profile-name" id="prof-name">Sathish K</div>
+              <div class="profile-role">Registered Patient</div>
+            </div>
+            <button class="edit-btn"><i class="ti ti-pencil"></i> Edit Profile</button>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Full Name</div>
+              <div class="info-value"><i class="ti ti-user"></i><span id="pi-name">Sathish K</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Username</div>
+              <div class="info-value"><i class="ti ti-at"></i><span id="pi-username">sathish_k</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Mobile</div>
+              <div class="info-value"><i class="ti ti-phone"></i><span id="pi-contact">6385795356</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Email</div>
+              <div class="info-value"><i class="ti ti-mail"></i><span id="pi-email">sathish@gmail.com</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Country</div>
+              <div class="info-value"><i class="ti ti-world"></i><span id="pi-country">India</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">State</div>
+              <div class="info-value"><i class="ti ti-map-pin"></i><span id="pi-state">Karnataka</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Zip Code</div>
+              <div class="info-value"><i class="ti ti-mailbox"></i><span id="pi-zip">560038</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Member Since</div>
+              <div class="info-value"><i class="ti ti-calendar"></i><span>May 2026</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ APPOINTMENTS PANEL ════ -->
+    <div class="panel" id="panel-appointments">
+      <div class="page-title">My Appointments</div>
+      <div class="page-sub">All your booked appointments with our specialists.</div>
+
+      <div class="apt-header">
+        <span class="apt-count" id="apt-count">0 Appointments</span>
+        <button class="edit-btn" onclick="showPanel('book')">
+          <i class="ti ti-plus"></i> Book New
+        </button>
+      </div>
+
+      <div class="apt-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Doctor</th>
+              <th>Specialization</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="apt-tbody">
+            <!-- filled by JS -->
+          </tbody>
+        </table>
+        <div class="empty-state" id="apt-empty">
+          <div class="empty-icon"><i class="ti ti-calendar-off"></i></div>
+          <div class="empty-title">No appointments yet</div>
+          <div class="empty-sub">Book your first appointment with one of our specialist doctors.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ BOOK APPOINTMENT PANEL ════ -->
+    <div class="panel" id="panel-book">
+      <div class="book-intro">
+        <div class="book-intro-text">
+          <div class="bi-title">Book an Appointment</div>
+          <div class="bi-sub">Choose from our team of experienced specialists below.</div>
+        </div>
+        <i class="ti ti-stethoscope bi-icon"></i>
+      </div>
+
+      <!-- search -->
+      <div class="search-bar">
+        <i class="ti ti-search"></i>
+        <input type="text" id="doctor-search" placeholder="Search by doctor name or specialization…" oninput="filterDoctors()"/>
+      </div>
+
+      <!-- doctors grid -->
+      <div class="doctors-grid" id="doctors-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ BOOKING MODAL ══ -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBookingModal()"><i class="ti ti-x"></i></button>
+
+    <!-- booking form -->
+    <div id="book-form-wrap">
+      <div class="modal-title">Book Appointment</div>
+      <div class="modal-sub">Select your preferred date and time.</div>
+
+      <div class="modal-dr-chip">
+        <div class="chip-avatar" id="modal-dr-avatar">D</div>
+        <div>
+          <div class="chip-name" id="modal-dr-name">Dr. Name</div>
+          <div class="chip-spec" id="modal-dr-spec">Specialization</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="apt-date"><i class="ti ti-calendar" style="color:var(--teal-400)"></i> Date <span style="color:#ef4444">*</span></label>
+        <input type="date" id="apt-date"/>
+      </div>
+      <div class="field">
+        <label for="apt-time"><i class="ti ti-clock" style="color:var(--teal-400)"></i> Time <span style="color:#ef4444">*</span></label>
+        <input type="time" id="apt-time"/>
+      </div>
+      <div id="book-error" style="display:none;font-size:12px;color:#dc2626;margin-bottom:12px;">
+        <i class="ti ti-alert-circle"></i> Please select both date and time.
+      </div>
+      <button class="confirm-btn" onclick="confirmBooking()">
+        <i class="ti ti-check"></i> Confirm Appointment
+      </button>
+    </div>
+
+    <!-- success state -->
+    <div class="booking-success" id="booking-success">
+      <div class="bs-icon"><i class="ti ti-circle-check"></i></div>
+      <div class="bs-title">Appointment Confirmed!</div>
+      <div class="bs-details" id="bs-details"></div>
+      <div class="bs-actions">
+        <button class="bs-btn bs-btn-outline" onclick="closeBookingModal()">
+          <i class="ti ti-x"></i> Close
+        </button>
+        <button class="bs-btn bs-btn-solid" onclick="showPanel('appointments');closeBookingModal()">
+          <i class="ti ti-calendar"></i> View Appointments
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ══════════════════════════════════════
+     DATA
+  ══════════════════════════════════════ */
+  const AVATAR_COLORS = ['#0ec4a1','#3b82f6','#f59e0b','#a855f7','#ef4444','#10b981','#f97316','#06b6d4','#ec4899'];
+
+  const DOCTORS = [
+    { id:1, name:'Dr. Sathish',   spec:'Cardiologist',        avail:'Mon–Fri' },
+    { id:2, name:'Dr. Shilpa',    spec:'Radiologist',         avail:'Mon–Sat' },
+    { id:3, name:'Dr. Teju',      spec:'Psychiatrist',        avail:'Tue–Fri' },
+    { id:4, name:'Dr. Nittish',   spec:'Neurologist',         avail:'Mon–Thu' },
+    { id:5, name:'Dr. Jennifer',  spec:'Pediatrician',        avail:'Mon–Fri' },
+    { id:6, name:'Dr. Emily',     spec:'Gynecologist',        avail:'Wed–Sat' },
+    { id:7, name:'Dr. Jonathan',  spec:'Orthopedic Surgeon',  avail:'Mon–Fri' },
+    { id:8, name:'Dr. Sarah',     spec:'Dermatologist',       avail:'Tue–Sat' },
+    { id:9, name:'Dr. Andrew',    spec:'Neurologist',         avail:'Mon–Wed' },
+  ];
+
+  let appointments = JSON.parse(sessionStorage.getItem('mc_apts') || '[]');
+  let selectedDoctor = null;
+
+  /* ── Load user from sessionStorage (set by register page) or use demo ── */
+  function loadUser() {
+    const stored = JSON.parse(sessionStorage.getItem('medicore_user') || 'null');
+    const u = stored || {
+      fullname: 'Sathish K', username: 'sathish_k',
+      contact: '6385795356', email: 'sathish@gmail.com',
+      country: 'India', state: 'Karnataka', zip: '560038'
+    };
+    const initials = u.fullname.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    // topbar
+    document.getElementById('top-avatar').textContent = initials;
+    document.getElementById('top-name').textContent   = u.fullname;
+    // sidebar
+    document.getElementById('sp-avatar').textContent  = initials;
+    document.getElementById('sp-name').textContent    = u.fullname;
+    document.getElementById('sp-email').textContent   = u.email;
+    // profile panel
+    document.getElementById('prof-avatar').textContent   = initials;
+    document.getElementById('prof-name').textContent      = u.fullname;
+    document.getElementById('pi-name').textContent        = u.fullname;
+    document.getElementById('pi-username').textContent    = u.username;
+    document.getElementById('pi-contact').textContent     = u.contact;
+    document.getElementById('pi-email').textContent       = u.email;
+    document.getElementById('pi-country').textContent     = u.country;
+    document.getElementById('pi-state').textContent       = u.state;
+    document.getElementById('pi-zip').textContent         = u.zip;
+  }
+
+  /* ══════════════════════════════════════
+     PANEL NAVIGATION
+  ══════════════════════════════════════ */
+  function showPanel(name) {
+    ['profile','appointments','book'].forEach(p => {
+      document.getElementById('panel-' + p).classList.toggle('active', p === name);
+      document.getElementById('nav-' + p).classList.toggle('active', p === name);
+    });
+    if (name === 'appointments') renderAppointments();
+    if (name === 'book')         renderDoctors();
+  }
+
+  /* ══════════════════════════════════════
+     DOCTORS GRID
+  ══════════════════════════════════════ */
+  function renderDoctors(filter = '') {
+    const grid = document.getElementById('doctors-grid');
+    const filtered = DOCTORS.filter(d =>
+      d.name.toLowerCase().includes(filter) || d.spec.toLowerCase().includes(filter)
+    );
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="ti ti-stethoscope"></i></div><div class="empty-title">No doctors found</div><div class="empty-sub">Try a different search term.</div></div>';
+      return;
+    }
+    grid.innerHTML = filtered.map((d, i) => `
+      <div class="doctor-card">
+        <div class="dr-avatar-wrap">
+          <div class="dr-avatar" style="background:${AVATAR_COLORS[i % AVATAR_COLORS.length]}">${d.name.split(' ')[1][0]}</div>
+          <div class="dr-info">
+            <div class="dr-name">${d.name}</div>
+            <div class="dr-spec"><i class="ti ti-stethoscope"></i>${d.spec}</div>
+          </div>
+        </div>
+        <div class="dr-avail"><i class="ti ti-circle-check"></i> Available ${d.avail}</div>
+        <button class="book-btn" onclick="openBookingModal(${d.id})">
+          <i class="ti ti-calendar-plus"></i> Book Appointment
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function filterDoctors() {
+    renderDoctors(document.getElementById('doctor-search').value.toLowerCase());
+  }
+
+  /* ══════════════════════════════════════
+     BOOKING MODAL
+  ══════════════════════════════════════ */
+  function openBookingModal(doctorId) {
+    selectedDoctor = DOCTORS.find(d => d.id === doctorId);
+    const idx = DOCTORS.indexOf(selectedDoctor);
+    // reset form
+    document.getElementById('book-form-wrap').style.display = 'block';
+    document.getElementById('booking-success').classList.remove('show');
+    document.getElementById('apt-date').value = '';
+    document.getElementById('apt-time').value = '';
+    document.getElementById('book-error').style.display = 'none';
+    // fill chip
+    document.getElementById('modal-dr-avatar').textContent  = selectedDoctor.name.split(' ')[1][0];
+    document.getElementById('modal-dr-avatar').style.background = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+    document.getElementById('modal-dr-name').textContent  = selectedDoctor.name;
+    document.getElementById('modal-dr-spec').textContent  = selectedDoctor.spec;
+    // min date = today
+    document.getElementById('apt-date').min = new Date().toISOString().split('T')[0];
+    document.getElementById('booking-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBookingModal() {
+    document.getElementById('booking-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function confirmBooking() {
+    const date = document.getElementById('apt-date').value;
+    const time = document.getElementById('apt-time').value;
+    if (!date || !time) {
+      document.getElementById('book-error').style.display = 'block';
+      return;
+    }
+    document.getElementById('book-error').style.display = 'none';
+
+    // save appointment
+    const apt = {
+      id:     Date.now(),
+      doctor: selectedDoctor.name,
+      spec:   selectedDoctor.spec,
+      date,
+      time,
+      status: 'Confirmed'
+    };
+    appointments.push(apt);
+    sessionStorage.setItem('mc_apts', JSON.stringify(appointments));
+
+    // show success
+    document.getElementById('book-form-wrap').style.display = 'none';
+    const succ = document.getElementById('booking-success');
+    succ.classList.add('show');
+    document.getElementById('bs-details').innerHTML = `
+      <div class="bs-row"><span>Doctor</span><span>${apt.doctor}</span></div>
+      <div class="bs-row"><span>Specialization</span><span>${apt.spec}</span></div>
+      <div class="bs-row"><span>Date</span><span>${formatDate(apt.date)}</span></div>
+      <div class="bs-row"><span>Time</span><span>${formatTime(apt.time)}</span></div>
+      <div class="bs-row"><span>Status</span><span style="color:#15803d;font-weight:700">✓ Confirmed</span></div>
+    `;
+  }
+
+  /* ══════════════════════════════════════
+     APPOINTMENTS TABLE
+  ══════════════════════════════════════ */
+  function renderAppointments() {
+    const tbody = document.getElementById('apt-tbody');
+    const empty = document.getElementById('apt-empty');
+    const count = document.getElementById('apt-count');
+    count.textContent = appointments.length + ' Appointment' + (appointments.length !== 1 ? 's' : '');
+
+    if (!appointments.length) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    tbody.innerHTML = appointments.slice().reverse().map((a, i) => `
+      <tr>
+        <td style="color:var(--faint);font-size:12px">${appointments.length - i}</td>
+        <td class="td-doctor">${a.doctor}</td>
+        <td><span class="td-spec">${a.spec}</span></td>
+        <td class="td-date">${formatDate(a.date)}</td>
+        <td class="td-date">${formatTime(a.time)}</td>
+        <td>
+          <span class="status-badge status-${a.status.toLowerCase()}">
+            <i class="ti ti-circle-check"></i> ${a.status}
+          </span>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  /* ── Helpers ── */
+  function formatDate(d) {
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+  function formatTime(t) {
+    const [h, m] = t.split(':');
+    const hr = parseInt(h);
+    return `${hr % 12 || 12}:${m} ${hr >= 12 ? 'PM' : 'AM'}`;
+  }
+
+  /* ── Logout ── */
+  function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+      sessionStorage.removeItem('medicore_user');
+      window.location.href = 'index.html';
+    }
+  }
+
+  /* close modal on overlay click */
+  document.getElementById('booking-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeBookingModal();
+  });
+
+  /* ── Init ── */
+  loadUser();
+  renderDoctors();
+</script>
+</body>
+</html>

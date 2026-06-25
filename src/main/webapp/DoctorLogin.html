@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MediCore - Doctor Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet"/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+:root{
+--teal-50:#e8f9f4;
+--teal-100:#c0f0e0;
+--teal-400:#0ec4a1;
+--teal-600:#0a9a7e;
+--teal-800:#065a49;
+--teal-900:#0a3d30;
+--border:#d4f0e7;
+--bg:#f0f9f6;
+}
+
+body{
+font-family:'DM Sans',sans-serif;
+background:linear-gradient(135deg,#e8f9f4,#f8fffd);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.login-container{
+width:100%;
+max-width:1100px;
+display:grid;
+grid-template-columns:1fr 1fr;
+background:white;
+border-radius:28px;
+overflow:hidden;
+box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+.left-panel{
+background:linear-gradient(135deg,var(--teal-900),var(--teal-600));
+padding:60px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+color:white;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:30px;
+}
+
+.logo-icon{
+width:50px;
+height:50px;
+border-radius:12px;
+background:rgba(255,255,255,.15);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.logo-icon i{
+font-size:26px;
+}
+
+.logo-text{
+font-size:24px;
+font-weight:700;
+}
+
+.hero-title{
+font-family:'Playfair Display',serif;
+font-size:42px;
+line-height:1.2;
+margin-bottom:20px;
+}
+
+.hero-desc{
+font-size:15px;
+line-height:1.8;
+color:rgba(255,255,255,.8);
+}
+
+.right-panel{
+padding:60px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.login-card{
+width:100%;
+max-width:420px;
+}
+
+.login-title{
+font-family:'Playfair Display',serif;
+font-size:34px;
+color:var(--teal-900);
+margin-bottom:10px;
+}
+
+.login-sub{
+color:#6b7280;
+margin-bottom:35px;
+}
+
+.field{
+margin-bottom:20px;
+}
+
+.field label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+color:var(--teal-800);
+font-size:14px;
+}
+
+.input-box{
+position:relative;
+}
+
+.input-box i{
+position:absolute;
+left:15px;
+top:50%;
+transform:translateY(-50%);
+color:#94a3b8;
+}
+
+.input-box input{
+width:100%;
+height:50px;
+padding-left:45px;
+border:1.5px solid var(--border);
+border-radius:12px;
+outline:none;
+font-size:14px;
+}
+
+.input-box input:focus{
+border-color:var(--teal-400);
+}
+
+.login-btn{
+width:100%;
+height:52px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,var(--teal-400),var(--teal-600));
+color:white;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+margin-top:10px;
+}
+
+.login-btn:hover{
+opacity:.9;
+}
+
+.back-home{
+margin-top:20px;
+text-align:center;
+}
+
+.back-home a{
+text-decoration:none;
+color:var(--teal-600);
+font-weight:600;
+}
+
+@media(max-width:900px){
+
+.login-container{
+grid-template-columns:1fr;
+}
+
+.left-panel{
+display:none;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+<div class="left-panel">
+
+<div class="logo">
+<div class="logo-icon">
+<i class="ti ti-heart-plus"></i>
+</div>
+<div class="logo-text">MediCore</div>
+</div>
+
+<div class="hero-title">
+Doctor Portal
+</div>
+
+<div class="hero-desc">
+Access your appointments, patient records and consultation history through the MediCore Hospital Management System.
+</div>
+
+</div>
+
+<div class="right-panel">
+
+<div class="login-card">
+
+<div class="login-title">
+Welcome Doctor
+</div>
+
+<div class="login-sub">
+Sign in to continue to your dashboard.
+</div>
+
+<form action="DoctorLoginServlet" method="post">
+
+<div class="field">
+<label>Doctor Username</label>
+<div class="input-box">
+<i class="ti ti-user"></i>
+<input type="text" name="username" required>
+</div>
+</div>
+
+<div class="field">
+<label>Password</label>
+<div class="input-box">
+<i class="ti ti-lock"></i>
+<input type="password" name="password" required>
+</div>
+</div>
+
+<button class="login-btn" type="submit">
+<i class="ti ti-login"></i>
+ Login
+</button>
+
+</form>
+
+<div class="back-home">
+<a href="index.html">
+<i class="ti ti-arrow-left"></i>
+Back to Home
+</a>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

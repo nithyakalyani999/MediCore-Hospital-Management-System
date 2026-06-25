@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediCore — Admin Dashboard</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@600;700&display=swap"
+	rel="stylesheet" />
+<link
+	href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+	rel="stylesheet" />
+<style>
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--teal-50: #e8f9f4;
+	--teal-100: #c0f0e0;
+	--teal-400: #0ec4a1;
+	--teal-600: #0a9a7e;
+	--teal-800: #065a49;
+	--teal-900: #0a3d30;
+	--blue-50: #e8f5ff;
+	--blue-400: #3b82f6;
+	--blue-600: #1d4ed8;
+	--border: #d4f0e7;
+	--muted: #5aaa90;
+	--faint: #7ec7b7;
+	--red: #ef4444;
+	--bg: #f0f9f6;
+}
+
+html, body {
+	min-height: 100vh;
+	font-family: 'DM Sans', sans-serif;
+	background: var(--bg);
+	color: var(--teal-900);
+}
+
+/* ══ TOPBAR ══ */
+.topbar {
+	background: #fff;
+	border-bottom: 1px solid var(--border);
+	padding: 0 32px;
+	height: 62px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	box-shadow: 0 1px 12px rgba(14, 196, 161, .06);
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	text-decoration: none;
+}
+
+.logo-icon {
+	width: 36px;
+	height: 36px;
+	background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+	border-radius: 9px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.logo-icon svg {
+	width: 20px;
+	height: 20px;
+	fill: #fff;
+}
+
+.logo-brand {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--teal-600);
+	display: block;
+}
+
+.logo-sub {
+	font-size: 9px;
+	color: var(--faint);
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	display: block;
+}
+
+.topbar-right {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.user-chip {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--blue-50);
+	border: 1px solid #bfdbfe;
+	border-radius: 30px;
+	padding: 4px 14px 4px 5px;
+}
+
+.user-avatar {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 13px;
+	font-weight: 700;
+	color: #fff;
+}
+
+.user-name {
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--teal-900);
+}
+
+.logout-btn {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	background: none;
+	border: 1.5px solid var(--border);
+	border-radius: 10px;
+	padding: 7px 14px;
+	font-size: 12.5px;
+	font-weight: 500;
+	color: var(--muted);
+	cursor: pointer;
+	font-family: 'DM Sans', sans-serif;
+	transition: all .2s;
+	text-decoration: none;
+}
+
+.logout-btn:hover {
+	border-color: var(--red);
+	color: var(--red);
+	background: #fef2f2;
+}
+
+/* ══ LAYOUT ══ */
+.layout {
+	display: flex;
+	min-height: calc(100vh - 62px);
+}
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+	width: 230px;
+	min-width: 230px;
+	background: #fff;
+	border-right: 1px solid var(--border);
+	padding: 24px 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.sidebar-profile {
+	background: linear-gradient(140deg, #1e3a5f 0%, var(--blue-600) 100%);
+	border-radius: 14px;
+	padding: 18px 14px;
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	text-align: center;
+}
+
+.sp-avatar {
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, .15);
+	border: 2.5px solid rgba(255, 255, 255, .3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22px;
+	font-weight: 700;
+	color: #fff;
+}
+
+.sp-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: #fff;
+}
+
+.sp-tag {
+	background: rgba(59, 130, 246, .3);
+	border: 1px solid rgba(59, 130, 246, .5);
+	color: #93c5fd;
+	font-size: 10px;
+	font-weight: 600;
+	padding: 2px 10px;
+	border-radius: 20px;
+	letter-spacing: .5px;
+}
+
+.nav-label {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	color: var(--faint);
+	padding: 0 10px;
+	margin: 10px 0 4px;
+}
+
+.nav-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	border-radius: 11px;
+	cursor: pointer;
+	transition: all .18s;
+	font-size: 13.5px;
+	font-weight: 500;
+	color: var(--muted);
+	border: 1.5px solid transparent;
+	text-decoration: none;
+}
+
+.nav-item i {
+	font-size: 17px;
+}
+
+.nav-item:hover {
+	background: var(--teal-50);
+	color: var(--teal-800);
+}
+
+.nav-item.active {
+	background: var(--blue-50);
+	border-color: #bfdbfe;
+	color: var(--blue-600);
+	font-weight: 600;
+}
+
+.nav-item.active i {
+	color: var(--blue-400);
+}
+
+.nav-item.danger {
+	color: #f87171;
+}
+
+.nav-item.danger:hover {
+	background: #fef2f2;
+	color: var(--red);
+	border-color: #fecaca;
+}
+
+/* ══ MAIN ══ */
+.main {
+	flex: 1;
+	padding: 30px 34px;
+	overflow-y: auto;
+}
+
+.panel {
+	display: none;
+	animation: fadeUp .28s ease both;
+}
+
+.panel.active {
+	display: block;
+}
+
+
+keyframes fadeUp {from { opacity:0;
+	transform: translateY(12px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+.page-title {
+	font-family: 'Playfair Display', serif;
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--teal-900);
+}
+
+.page-sub {
+	font-size: 13px;
+	color: var(--muted);
+	margin-top: 3px;
+	margin-bottom: 24px;
+}
+
+/* ══ STATS CARDS ══ */
+.stats-row {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 16px;
+	margin-bottom: 28px;
+}
+
+.stat-card {
+	background: #fff;
+	border: 1.5px solid var(--border);
+	border-radius: 16px;
+	padding: 20px 22px;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.stat-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 13px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22px;
+}
+
+.metric-value {
+	font-size: 22px;
+	font-weight: 700;
+	color: var(--teal-900);
+	line-height: 1.1;
+}
+
+.stat-lbl {
+	font-size: 11px;
+	color: var(--muted);
+	margin-top: 2px;
+}
+
+/* ══ TABLE ══ */
+.section-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.section-title {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--teal-900);
+}
+
+.btn-primary {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+	border: none;
+	border-radius: 11px;
+	padding: 9px 18px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #fff;
+	cursor: pointer;
+	font-family: 'DM Sans', sans-serif;
+	transition: opacity .2s;
+}
+
+.btn-primary:hover {
+	opacity: .88;
+}
+
+.table-wrap {
+	background: #fff;
+	border: 1.5px solid var(--border);
+	border-radius: 16px;
+	overflow: hidden;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+thead {
+	background: var(--blue-50);
+}
+
+thead th {
+	padding: 13px 16px;
+	text-align: left;
+	font-size: 10.5px;
+	font-weight: 600;
+	letter-spacing: .8px;
+	text-transform: uppercase;
+	color: var(--blue-600);
+}
+
+tbody tr {
+	border-top: 1px solid var(--border);
+	transition: background .12s;
+}
+
+tbody tr:hover {
+	background: #fafffe;
+}
+
+tbody td {
+	padding: 13px 16px;
+	font-size: 13px;
+	color: var(--teal-900);
+}
+
+.td-bold {
+	font-weight: 600;
+}
+
+.spec-tag {
+	display: inline-block;
+	background: var(--teal-50);
+	border: 1px solid var(--border);
+	border-radius: 20px;
+	padding: 2px 10px;
+	font-size: 11px;
+	font-weight: 500;
+	color: var(--teal-600);
+}
+
+.del-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	border-radius: 8px;
+	padding: 5px 12px;
+	font-size: 11.5px;
+	font-weight: 600;
+	color: var(--red);
+	cursor: pointer;
+	font-family: 'DM Sans', sans-serif;
+	text-decoration: none;
+	transition: all .2s;
+}
+
+.del-btn:hover {
+	background: #fee2e2;
+}
+
+.empty-box {
+	padding: 52px 20px;
+	text-align: center;
+}
+
+.empty-box i {
+	font-size: 40px;
+	color: var(--teal-100);
+	display: block;
+	margin-bottom: 10px;
+}
+
+.empty-box h3 {
+	font-size: 15px;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+.empty-box p {
+	font-size: 12.5px;
+	color: var(--muted);
+}
+
+/* ══ MODAL ══ */
+.modal-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(10, 61, 48, .45);
+	backdrop-filter: blur(4px);
+	z-index: 300;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal-overlay.open {
+	display: flex;
+}
+
+.modal {
+	background: #fff;
+	border-radius: 22px;
+	padding: 32px 28px;
+	width: 100%;
+	max-width: 440px;
+	margin: 16px;
+	position: relative;
+	animation: popIn .22s ease;
+}
+
+
+keyframes popIn {from { transform:scale(.94);
+	opacity: 0;
+}
+
+to {
+	transform: none;
+	opacity: 1;
+}
+
+}
+.modal-close {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	background: var(--teal-50);
+	border: none;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--teal-600);
+	font-size: 16px;
+	transition: background .2s;
+}
+
+.modal-close:hover {
+	background: var(--teal-100);
+}
+
+.modal-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 24px;
+}
+
+.modal-icon {
+	width: 46px;
+	height: 46px;
+	border-radius: 13px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22px;
+	background: var(--blue-50);
+}
+
+.modal-icon i {
+	color: var(--blue-400);
+}
+
+.modal-title {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--teal-900);
+}
+
+.modal-sub {
+	font-size: 12px;
+	color: var(--muted);
+	margin-top: 2px;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 14px;
+}
+
+.field label {
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--teal-800);
+}
+
+.field input, .field select {
+	height: 42px;
+	border: 1.5px solid var(--border);
+	border-radius: 10px;
+	padding: 0 13px;
+	font-size: 13.5px;
+	font-family: 'DM Sans', sans-serif;
+	color: var(--teal-900);
+	outline: none;
+	transition: border-color .2s, box-shadow .2s;
+	background: #fff;
+}
+
+.field input:focus, .field select:focus {
+	border-color: var(--blue-400);
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, .1);
+}
+
+.field input::placeholder {
+	color: #b0d4ca;
+}
+
+.field-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+.submit-btn {
+	width: 100%;
+	height: 44px;
+	background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+	border: none;
+	border-radius: 12px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #fff;
+	cursor: pointer;
+	font-family: 'DM Sans', sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	transition: opacity .2s;
+	margin-top: 6px;
+}
+
+.submit-btn:hover {
+	opacity: .88;
+}
+
+@media ( max-width : 700px) {
+	.sidebar {
+		display: none;
+	}
+	.main {
+		padding: 20px 16px;
+	}
+	.stats-row {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+</style>
+</head>
+<body>
+
+	<!-- ══ TOPBAR ══ -->
+	<header class="topbar">
+		<a class="logo" href="index.html">
+			<div class="logo-icon">
+				<svg viewBox="0 0 24 24">
+					<path
+						d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 14h-2v-4H7v-2h4V6h2v4h4v2h-4v4z" /></svg>
+			</div>
+			<div>
+				<span class="logo-brand">MediCore</span> <span class="logo-sub">Hospital</span>
+			</div>
+		</a>
+		<div class="topbar-right">
+			<div class="user-chip">
+				<div class="user-avatar">
+					<i class="ti ti-lock"></i>
+				</div>
+				<span class="user-name">Admin</span>
+			</div>
+			<a href="LogoutServlet" class="logout-btn"> <i
+				class="ti ti-logout"></i> Logout
+			</a>
+		</div>
+	</header>
+
+	<div class="layout">
+
+		<!-- ══ SIDEBAR ══ -->
+		<aside class="sidebar">
+			<div class="sidebar-profile">
+				<div class="sp-avatar">
+					<i class="ti ti-shield-check" style="font-size: 24px"></i>
+				</div>
+				<div class="sp-name">Administrator</div>
+				<div class="sp-tag">Admin Panel</div>
+			</div>
+
+			<div class="nav-label">Management</div>
+			<div class="nav-item active" id="nav-history"
+				onclick="show('history')">
+				<i class="ti ti-clipboard-list"></i> Patient History
+			</div>
+			<div class="nav-item" id="nav-doctors" onclick="show('doctors')">
+				<i class="ti ti-stethoscope"></i> Manage Doctors
+			</div>
+			<div class="nav-item" id="nav-patients" onclick="show('patients')">
+				<i class="ti ti-users"></i> View Patients
+			</div>
+			<div class="nav-label">Account</div>
+			<a href="LogoutServlet" class="nav-item danger"> <i
+				class="ti ti-logout"></i> Logout
+			</a>
+		</aside>
+
+		<!-- ══ MAIN ══ -->
+		<main class="main">
+
+			<!-- ════ PATIENT HISTORY PANEL ════ -->
+			<div class="panel active" id="panel-history">
+				<div class="page-title">Patient History</div>
+				<div class="page-sub">All appointment records across every
+					doctor and patient.</div>
+
+				<!-- Stats -->
+				<div class="stats-row">
+					<div class="stat-card">
+						<div class="stat-icon" style="background: #e8f5ff">
+							<i class="ti ti-calendar-check" style="color: var(--blue-400)"></i>
+						</div>
+						<div>
+							<div class="metric-value" id="appointmentCount">0</div>
+							<div class="stat-lbl">Total Appointments</div>
+						</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-icon" style="background: var(--teal-50)">
+							<i class="ti ti-users" style="color: var(--teal-400)"></i>
+						</div>
+						<div>
+							<div class="metric-value" id="patientCount">0</div>
+							<div class="stat-lbl">Unique Patients</div>
+						</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-icon" style="background: #fef9c3">
+							<i class="ti ti-stethoscope" style="color: #a16207"></i>
+						</div>
+						<div>
+							<div class="metric-value" id="doctorCount">0</div>
+							<div class="stat-lbl">Active Doctors</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section-head">
+					<span class="section-title">All Appointments</span>
+				</div>
+
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Patient Name</th>
+								<th>Doctor Name</th>
+								<th>Specialization</th>
+								<th>Date</th>
+								<th>Time</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody id="history-tbody">
+							<!-- Filled by JS fetch from PatientHistoryServlet -->
+						</tbody>
+					</table>
+					<div class="empty-box" id="history-empty" style="display: none">
+						<i class="ti ti-clipboard-off"></i>
+						<h3>No appointments yet</h3>
+						<p>Patient appointment records will appear here once bookings
+							are made.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- ════ MANAGE DOCTORS PANEL ════ -->
+			<div class="panel" id="panel-doctors">
+				<div class="page-title">Manage Doctors</div>
+				<div class="page-sub">Add or remove doctors from the system.</div>
+
+				<div class="section-head">
+					<span class="section-title">All Doctors</span>
+					<button class="btn-primary" onclick="openAddDoctor()">
+						<i class="ti ti-plus"></i> Add Doctor
+					</button>
+				</div>
+
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Full Name</th>
+								<th>Username</th>
+								<th>Specialization</th>
+								<th>Availability</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody id="doctors-tbody">
+							<!-- Filled by JS fetch from ViewDoctorsServlet -->
+						</tbody>
+					</table>
+					<div class="empty-box" id="doctors-empty" style="display: none">
+						<i class="ti ti-stethoscope"></i>
+						<h3>No doctors added yet</h3>
+						<p>Use the Add Doctor button above to register doctors.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- ════ MANAGE PATIENT PANEL ════ -->
+			<div class="panel" id="panel-patients">
+
+				<div class="page-title">Registered Patients</div>
+				<div class="page-sub">All patient records across every doctor.</div>
+				
+				<div class="section-head">
+					<span class="section-title">All Patients</span>
+				</div>
+				
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Full Name</th>
+								<th>Username</th>
+								<th>Email</th>
+								<th>Contact</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+
+						<tbody id="patients-tbody">
+						</tbody>
+
+					</table>
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- ══ ADD DOCTOR MODAL ══ -->
+	<div class="modal-overlay" id="add-doctor-modal">
+		<div class="modal">
+			<button class="modal-close" onclick="closeAddDoctor()">
+				<i class="ti ti-x"></i>
+			</button>
+			<div class="modal-header">
+				<div class="modal-icon">
+					<i class="ti ti-user-plus"></i>
+				</div>
+				<div>
+					<div class="modal-title">Add New Doctor</div>
+					<div class="modal-sub">Doctor will be able to login and view
+						patient appointments.</div>
+				</div>
+			</div>
+			<form action="AddDoctorServlet" method="post">
+				<div class="field">
+					<label>Full Name</label> <input type="text" name="fullName"
+						placeholder="e.g. Dr. Priya Sharma" required />
+				</div>
+				<div class="field-row">
+					<div class="field">
+						<label>Username</label> <input type="text" name="userName"
+							placeholder="dr.priya" required />
+					</div>
+					<div class="field">
+						<label>Password</label> <input type="password" name="password"
+							placeholder="Set login password" required />
+					</div>
+				</div>
+				<div class="field">
+					<label>Specialization</label> <select name="specialization"
+						required>
+						<option value="" disabled selected>Select specialization</option>
+						<option>Cardiologist</option>
+						<option>Radiologist</option>
+						<option>Psychiatrist</option>
+						<option>Neurologist</option>
+						<option>Pediatrician</option>
+						<option>Gynecologist</option>
+						<option>Orthopedic Surgeon</option>
+						<option>Dermatologist</option>
+						<option>General Physician</option>
+						<option>ENT Specialist</option>
+						<option>Ophthalmologist</option>
+						<option>Oncologist</option>
+						<option>Other</option>
+					</select>
+				</div>
+				<div class="field">
+					<label>Availability</label> <select name="availability" required>
+						<option value="" disabled selected>Select availability</option>
+						<option>Mon-Fri</option>
+						<option>Mon-Sat</option>
+						<option>Tue-Fri</option>
+						<option>Tue-Sat</option>
+						<option>Mon-Thu</option>
+						<option>Wed-Sat</option>
+						<option>Mon-Wed</option>
+					</select>
+				</div>
+				<button type="submit" class="submit-btn">
+					<i class="ti ti-check"></i> Add Doctor
+				</button>
+			</form>
+		</div>
+	</div>
+
+	<script>
+  /* ══ PANEL NAVIGATION ══ */
+  function show(name) {
+    ['history', 'doctors', 'patients'].forEach(p => {
+      document.getElementById('panel-' + p).classList.toggle('active', p === name);
+      document.getElementById('nav-'   + p).classList.toggle('active', p === name);
+    });
+    if (name === 'history') loadHistory();
+    if (name === 'doctors') loadDoctors();
+    if (name === 'patients') loadPatients();
+  }
+
+  /* ══ LOAD PATIENT HISTORY FROM SERVLET ══ */
+  function loadHistory()
+{
+    fetch('PatientHistoryServlet')
+    .then(response => response.text())
+    .then(data => {
+
+        document.getElementById(
+            'history-tbody'
+        ).innerHTML = data;
+    })
+    .catch(() => {
+
+        document.getElementById(
+            'history-tbody'
+        ).innerHTML =
+        "<tr><td colspan='6'>Could not load data</td></tr>";
+    });
+}
+
+  /* ══ LOAD DOCTORS FROM SERVLET ══ */
+function loadDoctors()
+{
+    fetch('ViewDoctorsServlet')
+    .then(response => response.text())
+    .then(data => {
+
+        document.getElementById(
+            'doctors-tbody'
+        ).innerHTML = data;
+    })
+    .catch(() => {
+
+        document.getElementById(
+            'doctors-tbody'
+        ).innerHTML =
+        "<tr><td colspan='5'>Could not load data</td></tr>";
+    });
+}
+  
+  function loadPatients()
+  {
+      fetch('viewPatients')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById(
+                  'patients-tbody'
+              ).innerHTML = data;
+          });
+  }
+
+  /* ══ ADD DOCTOR MODAL ══ */
+  function openAddDoctor() {
+    document.getElementById('add-doctor-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAddDoctor() {
+    document.getElementById('add-doctor-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('add-doctor-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeAddDoctor();
+  });
+  
+  function loadDashboardStats()
+  {
+      fetch('DashboardStatsServlet')
+          .then(response => response.text())
+          .then(data => {
+
+              const values = data.split(',');
+
+              document.getElementById(
+                  'appointmentCount'
+              ).textContent = values[0];
+
+              document.getElementById(
+                  'patientCount'
+              ).textContent = values[1];
+
+              document.getElementById(
+                  'doctorCount'
+              ).textContent = values[2];
+          });
+  }
+
+  /* ── Init ── */
+window.onload = function()
+{
+    loadDashboardStats();
+
+    loadHistory();
+};
+</script>
+</body>
+</html>

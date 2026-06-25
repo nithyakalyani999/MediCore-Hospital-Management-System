@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediCore — Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-50:   #e8f9f4;
+      --teal-100:  #c0f0e0;
+      --teal-400:  #0ec4a1;
+      --teal-600:  #0a9a7e;
+      --teal-800:  #065a49;
+      --teal-900:  #0a3d30;
+      --border:    #d4f0e7;
+      --muted:     #5aaa90;
+      --faint:     #7ec7b7;
+      --error:     #dc2626;
+      --error-bg:  #fef2f2;
+      --error-bdr: #fecaca;
+      --success:   #059669;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      background: #f0f9f6;
+      color: var(--teal-900);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 22px; height: 22px; fill: #fff; }
+    .logo-text .brand { font-size: 15px; font-weight: 600; color: var(--teal-600); display: block; line-height: 1.1; }
+    .logo-text .sub   { font-size: 9px; color: var(--faint); letter-spacing: 1.8px; text-transform: uppercase; }
+    .back-link {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--muted); text-decoration: none;
+      padding: 7px 14px; border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: background .2s, border-color .2s;
+    }
+    .back-link:hover { background: var(--teal-50); border-color: var(--teal-400); color: var(--teal-800); }
+
+    /* ── MAIN LAYOUT ── */
+    .page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 67px);
+    }
+
+    /* ── LEFT PANEL ── */
+    .left-panel {
+      background: linear-gradient(160deg, var(--teal-900) 0%, #0a5c47 60%, var(--teal-600) 100%);
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .left-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* decorative circles */
+    .deco-circle {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .dc1 { width: 280px; height: 280px; top: -80px; right: -80px; }
+    .dc2 { width: 180px; height: 180px; bottom: 40px; left: -60px; }
+    .dc3 { width: 120px; height: 120px; bottom: 200px; right: 40px; }
+
+    .panel-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.85);
+      font-size: 11px; font-weight: 500;
+      padding: 6px 14px; border-radius: 20px;
+      letter-spacing: .5px; margin-bottom: 28px;
+      width: fit-content;
+    }
+    .panel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .panel-title em { color: var(--teal-400); font-style: normal; }
+    .panel-sub {
+      font-size: 14px; color: rgba(255,255,255,.65);
+      line-height: 1.7; max-width: 340px; margin-bottom: 44px;
+    }
+
+    /* feature list */
+    .features { display: flex; flex-direction: column; gap: 18px; }
+    .feat-item {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .feat-icon {
+      width: 40px; height: 40px; min-width: 40px;
+      background: rgba(14,196,161,.18);
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; color: var(--teal-400);
+    }
+    .feat-text .feat-title { font-size: 13.5px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .feat-text .feat-desc  { font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.5; }
+
+    /* step indicator */
+    .steps {
+      display: flex; align-items: center; gap: 0;
+      margin-top: 48px;
+    }
+    .step {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      flex: 1;
+    }
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      border: 2px solid rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
+      transition: all .3s;
+    }
+    .step-dot.active { background: var(--teal-400); border-color: var(--teal-400); color: #fff; }
+    .step-dot.done   { background: rgba(14,196,161,.3); border-color: var(--teal-400); color: var(--teal-400); }
+    .step-label { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing: .5px; text-align: center; }
+    .step-label.active { color: rgba(255,255,255,.85); }
+    .step-line { flex: 1; height: 1px; background: rgba(255,255,255,.12); margin-bottom: 16px; }
+
+    /* ── RIGHT PANEL (FORM) ── */
+    .right-panel {
+      padding: 48px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .form-header { margin-bottom: 32px; }
+    .form-title  { font-size: 24px; font-weight: 700; color: var(--teal-900); margin-bottom: 6px; }
+    .form-sub    { font-size: 13.5px; color: var(--muted); }
+
+    /* progress bar */
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-labels {
+      display: flex; justify-content: space-between; margin-bottom: 8px;
+    }
+    .prog-lbl {
+      font-size: 11px; font-weight: 500; color: var(--faint); letter-spacing: .3px;
+      transition: color .3s;
+    }
+    .prog-lbl.active { color: var(--teal-600); font-weight: 600; }
+    .progress-bar {
+      height: 4px; background: var(--teal-100); border-radius: 10px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--teal-400), var(--teal-600));
+      transition: width .4s ease;
+      width: 50%;
+    }
+
+    /* form sections */
+    .form-section { display: none; animation: fadeSlide .3s ease both; }
+    .form-section.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(16px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--teal-400);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* field grid */
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
+      margin-bottom: 4px;
+    }
+    .field-grid .full { grid-column: 1 / -1; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: 12px; font-weight: 500;
+      color: var(--teal-800); letter-spacing: .2px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .field label .req { color: var(--error); font-size: 13px; }
+
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; color: var(--faint); pointer-events: none;
+      transition: color .2s;
+    }
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%; height: 44px;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      padding: 0 14px 0 40px;
+      font-size: 13.5px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--teal-900);
+      background: #fff;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+    }
+    .input-wrap select { cursor: pointer; }
+    .input-wrap input::placeholder { color: #b0d4ca; }
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      border-color: var(--teal-400);
+      box-shadow: 0 0 0 3px rgba(14,196,161,.1);
+    }
+    .input-wrap input:focus + i,
+    .input-wrap:focus-within i { color: var(--teal-400); }
+    .input-wrap.has-icon-right input { padding-right: 40px; }
+    .icon-right {
+      position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; color: var(--faint); cursor: pointer;
+      pointer-events: all !important;
+      left: auto !important;
+    }
+
+    /* field validation states */
+    .field.error .input-wrap input,
+    .field.error .input-wrap select { border-color: var(--error); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+    .field.valid .input-wrap input,
+    .field.valid .input-wrap select { border-color: #10b981; }
+    .field-msg { font-size: 11px; color: var(--error); margin-top: 4px; display: none; }
+    .field.error .field-msg { display: block; }
+
+    /* password strength */
+    .pwd-strength { margin-top: 8px; }
+    .strength-bar { display: flex; gap: 4px; margin-bottom: 5px; }
+    .strength-seg {
+      flex: 1; height: 3px; border-radius: 4px;
+      background: var(--border); transition: background .3s;
+    }
+    .strength-label { font-size: 11px; color: var(--faint); }
+
+    /* navigation buttons */
+    .form-nav {
+      display: flex; gap: 12px; margin-top: 28px;
+    }
+    .btn-back {
+      flex: 1; height: 46px;
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 13px; font-size: 14px; font-weight: 500;
+      color: var(--muted); cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .btn-back:hover { border-color: var(--teal-400); color: var(--teal-800); background: var(--teal-50); }
+
+    .btn-next, .btn-submit {
+      flex: 2; height: 46px;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      border: none; border-radius: 13px;
+      font-size: 14px; font-weight: 600; color: #fff;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 14px rgba(14,196,161,.25);
+    }
+    .btn-next:hover, .btn-submit:hover { opacity: .9; box-shadow: 0 6px 20px rgba(14,196,161,.35); }
+    .btn-next:active, .btn-submit:active { transform: scale(.98); }
+
+    /* T&C checkbox */
+    .checkbox-wrap {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-top: 18px; margin-bottom: 4px;
+    }
+    .checkbox-wrap input[type="checkbox"] {
+      width: 17px; height: 17px; min-width: 17px; margin-top: 2px;
+      accent-color: var(--teal-400); cursor: pointer;
+    }
+    .checkbox-wrap label { font-size: 12.5px; color: var(--muted); line-height: 1.5; cursor: pointer; }
+    .checkbox-wrap label a { color: var(--teal-400); text-decoration: none; }
+    .checkbox-wrap label a:hover { text-decoration: underline; }
+
+    /* login link */
+    .login-link {
+      text-align: center; margin-top: 20px;
+      font-size: 13px; color: var(--muted);
+    }
+    .login-link a { color: var(--teal-400); font-weight: 500; text-decoration: none; }
+    .login-link a:hover { text-decoration: underline; }
+
+    /* ── SUCCESS SCREEN ── */
+    .success-screen {
+      display: none;
+      flex-direction: column; align-items: center;
+      text-align: center; padding: 20px 0;
+      animation: fadeSlide .4s ease both;
+    }
+    .success-screen.show { display: flex; }
+    .success-icon {
+      width: 80px; height: 80px;
+      background: var(--teal-50); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px; color: var(--teal-400); margin-bottom: 20px;
+      border: 3px solid var(--teal-100);
+    }
+    .success-title { font-size: 22px; font-weight: 700; color: var(--teal-900); margin-bottom: 10px; }
+    .success-sub   { font-size: 13.5px; color: var(--muted); max-width: 320px; line-height: 1.6; margin-bottom: 32px; }
+    .success-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn-home, .btn-login {
+      height: 44px; padding: 0 28px; border-radius: 12px;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; gap: 7px;
+      text-decoration: none; transition: opacity .2s, transform .15s;
+    }
+    .btn-home  { background: #fff; border: 1.5px solid var(--border); color: var(--muted); }
+    .btn-login { background: linear-gradient(135deg, var(--teal-400), var(--teal-600)); border: none; color: #fff; box-shadow: 0 4px 14px rgba(14,196,161,.25); }
+    .btn-home:hover, .btn-login:hover { opacity: .88; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .page { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .right-panel { padding: 36px 28px; }
+    }
+    @media (max-width: 480px) {
+      .topbar { padding: 12px 20px; }
+      .right-panel { padding: 28px 20px; }
+      .field-grid { grid-template-columns: 1fr; }
+      .field-grid .full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ TOP BAR ══ -->
+  <header class="topbar">
+    <a class="logo" href="index.html">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 14h-2v-4H7v-2h4V6h2v4h4v2h-4v4z"/></svg>
+      </div>
+      <div class="logo-text">
+        <span class="brand">MediCore</span>
+        <span class="sub">Hospital</span>
+      </div>
+    </a>
+    <a class="back-link" href="index.html">
+      <i class="ti ti-arrow-left"></i> Back to Home
+    </a>
+  </header>
+
+  <div class="page">
+
+    <!-- ══ LEFT PANEL ══ -->
+    <aside class="left-panel">
+      <div class="deco-circle dc1"></div>
+      <div class="deco-circle dc2"></div>
+      <div class="deco-circle dc3"></div>
+
+      <div class="panel-badge"><i class="ti ti-shield-check"></i> Secure Registration</div>
+
+      <h2 class="panel-title">Join <em>MediCore</em><br>Hospital Today</h2>
+      <p class="panel-sub">Create your patient account and get access to seamless appointment booking, your medical history, and much more.</p>
+
+      <div class="features">
+        <div class="feat-item">
+          <div class="feat-icon"><i class="ti ti-calendar-plus"></i></div>
+          <div class="feat-text">
+            <div class="feat-title">Easy Appointment Booking</div>
+            <div class="feat-desc">Book with specialist doctors in just a few clicks, anytime.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon"><i class="ti ti-report-medical"></i></div>
+          <div class="feat-text">
+            <div class="feat-title">Your Medical History</div>
+            <div class="feat-desc">Access all your past and upcoming appointments in one place.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon"><i class="ti ti-lock"></i></div>
+          <div class="feat-text">
+            <div class="feat-title">Private &amp; Secure</div>
+            <div class="feat-desc">Your health data is encrypted and fully protected.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-dot active" id="sdot-1">1</div>
+          <div class="step-label active" id="slbl-1">Personal</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-dot" id="sdot-2">2</div>
+          <div class="step-label" id="slbl-2">Account</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-dot" id="sdot-3">3</div>
+          <div class="step-label" id="slbl-3">Done</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ══ RIGHT PANEL ══ -->
+    <main class="right-panel">
+  		<form id="register-form" action="UserRegisterServlet" method="post">
+
+      <!-- form header -->
+      <div class="form-header" id="form-header">
+        <div class="form-title">Create Your Account</div>
+        <div class="form-sub">Fill in the details below — it only takes a minute.</div>
+      </div>
+
+      <!-- progress -->
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-labels">
+          <span class="prog-lbl active" id="plbl-1">Personal Info</span>
+          <span class="prog-lbl" id="plbl-2">Account Setup</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="prog-fill"></div>
+        </div>
+      </div>
+
+      <!-- global error banner -->
+      <div id="global-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:11px 16px;font-size:13px;color:#dc2626;margin-bottom:18px;">
+        <i class="ti ti-alert-circle"></i> Please fix the highlighted fields before continuing.
+      </div>
+
+      <!-- ════ STEP 1 — Personal Info ════ -->
+      <div class="form-section active" id="step-1">
+        <div class="section-label"><i class="ti ti-user"></i> Personal Information</div>
+
+        <div class="field-grid">
+          <!-- Full Name -->
+          <div class="field full" id="f-name">
+            <label for="fullname">Full Name <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-user"></i>
+              <input type="text" id="fullname" name="fullname" placeholder="e.g. Sathish Kumar" autocomplete="name"/>
+            </div>
+            <span class="field-msg">Full name is required.</span>
+          </div>
+
+          <!-- Contact -->
+          <div class="field" id="f-contact">
+            <label for="contact">Mobile Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-phone"></i>
+              <input type="tel" id="contact" name="contact" placeholder="10-digit mobile" maxlength="10" autocomplete="tel"/>
+            </div>
+            <span class="field-msg">Enter a valid 10-digit number.</span>
+          </div>
+
+          <!-- Email -->
+          <div class="field" id="f-email">
+            <label for="email">Email Address <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-mail"></i>
+              <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"/>
+            </div>
+            <span class="field-msg">Enter a valid email address.</span>
+          </div>
+
+          <!-- Country -->
+          <div class="field" id="f-country">
+            <label for="country">Country <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-world"></i>
+              <select id="country" name="country" onchange="populateStates()">
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="UAE">UAE</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <span class="field-msg">Please select a country.</span>
+          </div>
+
+          <!-- State -->
+          <div class="field" id="f-state">
+            <label for="state">State <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-map-pin"></i>
+              <select id="state" name="state">
+                <option value="">Select State</option>
+              </select>
+            </div>
+            <span class="field-msg">Please select a state.</span>
+          </div>
+
+          <!-- Zip -->
+          <div class="field" id="f-zip">
+            <label for="zip">Postal / Zip Code <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-mailbox"></i>
+              <input type="text" id="zip" name="zip" placeholder="e.g. 560038" maxlength="10"/>
+            </div>
+            <span class="field-msg">Enter a valid postal code.</span>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button type="button" class="btn-next" onclick="goStep(2)">
+            Next — Account Setup <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="login-link">Already have an account? <a href="index.html">Sign in</a></div>
+      </div><!-- /step-1 -->
+
+
+      <!-- ════ STEP 2 — Account Setup ════ -->
+      <div class="form-section" id="step-2">
+        <div class="section-label"><i class="ti ti-lock"></i> Account Credentials</div>
+
+        <div class="field-grid">
+          <!-- Username -->
+          <div class="field full" id="f-username">
+            <label for="username">Username <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="ti ti-at"></i>
+              <input type="text" id="username" name="username" placeholder="Choose a unique username" autocomplete="username"/>
+            </div>
+            <span class="field-msg">Username must be at least 4 characters.</span>
+          </div>
+
+          <!-- Password -->
+          <div class="field" id="f-password">
+            <label for="password">Password <span class="req">*</span></label>
+            <div class="input-wrap has-icon-right">
+              <i class="ti ti-lock"></i>
+              <input type="password" id="password" name="password" placeholder="Min. 8 characters" autocomplete="new-password" oninput="checkStrength()"/>
+              <i class="ti ti-eye icon-right" id="pwd-toggle" onclick="togglePwd('password','pwd-toggle')"></i>
+            </div>
+            <div class="pwd-strength">
+              <div class="strength-bar">
+                <div class="strength-seg" id="ss1"></div>
+                <div class="strength-seg" id="ss2"></div>
+                <div class="strength-seg" id="ss3"></div>
+                <div class="strength-seg" id="ss4"></div>
+              </div>
+              <span class="strength-label" id="strength-lbl">Strength indicator</span>
+            </div>
+            <span class="field-msg">Password must be at least 8 characters.</span>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="field" id="f-confirm">
+            <label for="confirm">Confirm Password <span class="req">*</span></label>
+            <div class="input-wrap has-icon-right">
+              <i class="ti ti-lock-check"></i>
+              <input type="password" id="confirm" name="confirm" placeholder="Re-enter password" autocomplete="new-password"/>
+              <i class="ti ti-eye icon-right" id="conf-toggle" onclick="togglePwd('confirm','conf-toggle')"></i>
+            </div>
+            <span class="field-msg">Passwords do not match.</span>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <div class="checkbox-wrap">
+          <input type="checkbox" id="terms" name="terms"/>
+          <label for="terms">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of MediCore Hospital.
+          </label>
+        </div>
+        <div class="field-msg" id="terms-err" style="display:none;color:var(--error);font-size:11px;margin-top:4px;">
+          You must accept the terms to register.
+        </div>
+
+        <div class="form-nav">
+          <button type="button" class="btn-back" onclick="goStep(1)">
+            <i class="ti ti-arrow-left"></i> Back
+          </button>
+          <button type="button" class="btn-submit" onclick="submitForm()">
+            <i class="ti ti-user-check"></i> Create Account
+          </button>
+        </div>
+      </div><!-- /step-2 -->
+
+
+      <!-- ════ SUCCESS ════ -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon"><i class="ti ti-circle-check"></i></div>
+        <div class="success-title">Registration Successful! 🎉</div>
+        <div class="success-sub">Congratulations! Your MediCore account has been created successfully. You can now log in and book appointments.</div>
+        <div class="success-actions">
+          <a href="index.html" class="btn-home"><i class="ti ti-home"></i> Home</a>
+          <a href="index.html" class="btn-login"><i class="ti ti-login"></i> Back to Login</a>
+        </div>
+      </div>
+      </form> 
+
+    </main>
+  </div><!-- /page -->
+
+
+  <script>
+    /* ══════════════════════════════════════
+       STATE / STEP LOGIC
+    ══════════════════════════════════════ */
+    const STATES = {
+      'India':         ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Delhi','J&K','Ladakh','Puducherry'],
+      'United States': ['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'],
+      'United Kingdom':['England','Scotland','Wales','Northern Ireland'],
+      'Canada':        ['Alberta','British Columbia','Manitoba','New Brunswick','Newfoundland','Nova Scotia','Ontario','PEI','Quebec','Saskatchewan'],
+      'Australia':     ['ACT','New South Wales','Northern Territory','Queensland','South Australia','Tasmania','Victoria','Western Australia'],
+      'Germany':       ['Bavaria','Berlin','Hamburg','North Rhine-Westphalia','Saxony','Other'],
+      'France':        ['Île-de-France','Provence','Normandy','Brittany','Aquitaine','Other'],
+      'UAE':           ['Abu Dhabi','Dubai','Sharjah','Ajman','Fujairah','Ras Al Khaimah','Umm Al Quwain'],
+      'Singapore':     ['Central Region','East Region','North Region','North-East Region','West Region'],
+      'Other':         ['Other'],
+    };
+
+    function populateStates() {
+      const country = document.getElementById('country').value;
+      const sel     = document.getElementById('state');
+      sel.innerHTML = '<option value="">Select State</option>';
+      (STATES[country] || []).forEach(s => {
+        const o = document.createElement('option');
+        o.value = o.textContent = s;
+        sel.appendChild(o);
+      });
+    }
+
+    /* ── Step navigation ── */
+    let currentStep = 1;
+
+    function goStep(step) {
+      if (step === 2 && !validateStep1()) return;
+
+      document.getElementById('step-' + currentStep).classList.remove('active');
+      currentStep = step;
+      document.getElementById('step-' + currentStep).classList.add('active');
+
+      // progress bar
+      document.getElementById('prog-fill').style.width = step === 1 ? '50%' : '100%';
+
+      // progress labels
+      document.getElementById('plbl-1').classList.toggle('active', step === 1);
+      document.getElementById('plbl-2').classList.toggle('active', step === 2);
+
+      // sidebar dots
+      ['1','2'].forEach(n => {
+        const dot = document.getElementById('sdot-' + n);
+        const lbl = document.getElementById('slbl-' + n);
+        dot.classList.remove('active','done');
+        lbl.classList.remove('active');
+        if (parseInt(n) < step)  { dot.classList.add('done'); dot.innerHTML = '<i class="ti ti-check" style="font-size:12px"></i>'; }
+        if (parseInt(n) === step){ dot.classList.add('active'); lbl.classList.add('active'); dot.textContent = n; }
+        if (parseInt(n) > step)  { dot.textContent = n; }
+      });
+
+      document.getElementById('global-error').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── Validation helpers ── */
+    function setField(id, valid, msg) {
+      const f = document.getElementById('f-' + id);
+      if (!f) return;
+      f.classList.toggle('error', !valid);
+      f.classList.toggle('valid',  valid);
+      if (!valid && msg) {
+        const m = f.querySelector('.field-msg');
+        if (m) m.textContent = msg;
+      }
+      return valid;
+    }
+
+    function validateStep1() {
+      let ok = true;
+      const name    = document.getElementById('fullname').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const country = document.getElementById('country').value;
+      const state   = document.getElementById('state').value;
+      const zip     = document.getElementById('zip').value.trim();
+
+      if (!setField('name',    name.length >= 2,                              'Full name is required.'))   ok = false;
+      if (!setField('contact', /^\d{10}$/.test(contact),                      'Enter a valid 10-digit mobile number.')) ok = false;
+      if (!setField('email',   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),     'Enter a valid email address.')) ok = false;
+      if (!setField('country', country !== '',                                 'Please select a country.')) ok = false;
+      if (!setField('state',   state !== '',                                   'Please select a state.'))   ok = false;
+      if (!setField('zip',     zip.length >= 4 && zip.length <= 10,           'Enter a valid postal code.')) ok = false;
+
+      if (!ok) document.getElementById('global-error').style.display = 'block';
+      return ok;
+    }
+
+    function validateStep2() {
+      let ok = true;
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm  = document.getElementById('confirm').value;
+      const terms    = document.getElementById('terms').checked;
+
+      if (!setField('username', username.length >= 4, 'Username must be at least 4 characters.')) ok = false;
+      if (!setField('password', password.length >= 8, 'Password must be at least 8 characters.')) ok = false;
+      if (!setField('confirm',  password === confirm && confirm.length > 0, 'Passwords do not match.')) ok = false;
+
+      const te = document.getElementById('terms-err');
+      if (!terms) { te.style.display = 'block'; ok = false; }
+      else { te.style.display = 'none'; }
+
+      if (!ok) document.getElementById('global-error').style.display = 'block';
+      return ok;
+    }
+
+    /* ── Submit ── */
+    function submitForm() {
+    if (!validateStep2()) return;
+    document.getElementById('register-form').submit();
+    }
+
+    /* ── Password strength ── */
+    function checkStrength() {
+      const val   = document.getElementById('password').value;
+      const segs  = [document.getElementById('ss1'), document.getElementById('ss2'), document.getElementById('ss3'), document.getElementById('ss4')];
+      const lbl   = document.getElementById('strength-lbl');
+      let score   = 0;
+      if (val.length >= 8)            score++;
+      if (/[A-Z]/.test(val))          score++;
+      if (/[0-9]/.test(val))          score++;
+      if (/[^A-Za-z0-9]/.test(val))   score++;
+
+      const colors = ['#ef4444','#f97316','#eab308','#10b981'];
+      const labels = ['Weak','Fair','Good','Strong'];
+
+      segs.forEach((s, i) => {
+        s.style.background = i < score ? colors[score - 1] : 'var(--border)';
+      });
+      lbl.textContent = score > 0 ? labels[score - 1] : 'Strength indicator';
+      lbl.style.color = score > 0 ? colors[score - 1] : 'var(--faint)';
+    }
+
+    /* ── Toggle password visibility ── */
+    function togglePwd(inputId, iconId) {
+      const inp  = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.className = 'ti ti-eye-off icon-right';
+      } else {
+        inp.type = 'password';
+        icon.className = 'ti ti-eye icon-right';
+      }
+    }
+
+    /* ── Live inline validation on blur ── */
+    document.getElementById('fullname').addEventListener('blur', function() {
+      setField('name', this.value.trim().length >= 2, 'Full name is required.');
+    });
+    document.getElementById('contact').addEventListener('blur', function() {
+      setField('contact', /^\d{10}$/.test(this.value.trim()), 'Enter a valid 10-digit mobile number.');
+    });
+    document.getElementById('email').addEventListener('blur', function() {
+      setField('email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value.trim()), 'Enter a valid email address.');
+    });
+    document.getElementById('zip').addEventListener('blur', function() {
+      setField('zip', this.value.trim().length >= 4, 'Enter a valid postal code.');
+    });
+    document.getElementById('username').addEventListener('blur', function() {
+      setField('username', this.value.trim().length >= 4, 'Username must be at least 4 characters.');
+    });
+    document.getElementById('confirm').addEventListener('blur', function() {
+      setField('confirm', this.value === document.getElementById('password').value && this.value.length > 0, 'Passwords do not match.');
+    });
+  </script>
+</body>
+</html>

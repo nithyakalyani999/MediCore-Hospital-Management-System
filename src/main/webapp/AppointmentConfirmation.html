@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MediCore - Appointment Confirmation</title>
+
+<link
+	href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+	rel="stylesheet">
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--teal-50: #e8f9f4;
+	--teal-100: #c0f0e0;
+	--teal-400: #0ec4a1;
+	--teal-600: #0a9a7e;
+	--teal-800: #065a49;
+	--teal-900: #0a3d30;
+	--border: #d4f0e7;
+	--muted: #5aaa90;
+	--bg: #f0f9f6;
+}
+
+body {
+	font-family: 'DM Sans', sans-serif;
+	background: var(--bg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	max-height: auto;
+	padding: 20px;
+}
+
+/* ==========================
+CONFIRMATION CARD
+========================== */
+.confirmation-card {
+	width: 100%;
+	max-width: 700px;
+	background: white;
+	border: 1px solid var(--border);
+	border-radius: 24px;
+	padding: 40px;
+	text-align: center;
+	box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+}
+
+.success-icon {
+	width: 90px;
+	height: 90px;
+	margin: auto;
+	border-radius: 50%;
+	background: var(--teal-50);
+	border: 3px solid var(--teal-100);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 45px;
+	color: var(--teal-400);
+	margin-bottom: 20px;
+}
+
+.title {
+	font-family: 'Playfair Display', serif;
+	font-size: 32px;
+	color: var(--teal-900);
+	margin-bottom: 10px;
+}
+
+.subtitle {
+	color: var(--muted);
+	font-size: 15px;
+	margin-bottom: 35px;
+}
+
+/* ==========================
+DETAIL CARD
+========================== */
+.details-card {
+	background: var(--teal-50);
+	border: 1px solid var(--border);
+	border-radius: 18px;
+	padding: 25px;
+	text-align: left;
+	margin-bottom: 30px;
+}
+
+.detail-row {
+	display: flex;
+	justify-content: space-between;
+	padding: 12px 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-row:last-child {
+	border-bottom: none;
+}
+
+.detail-label {
+	font-weight: 600;
+	color: var(--muted);
+}
+
+.detail-value {
+	font-weight: 600;
+	color: var(--teal-900);
+}
+
+/* ==========================
+MESSAGE
+========================== */
+.info-box {
+	background: #ffffff;
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	padding: 18px;
+	margin-bottom: 30px;
+	font-size: 14px;
+	color: var(--teal-800);
+	line-height: 1.6;
+}
+
+/* ==========================
+BUTTONS
+========================== */
+.btn-group {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	flex-wrap: wrap;
+}
+
+.btn {
+	padding: 14px 28px;
+	border-radius: 12px;
+	font-weight: 600;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	transition: .2s;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+	color: white;
+}
+
+.btn-secondary {
+	border: 1px solid var(--border);
+	background: white;
+	color: var(--teal-800);
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+}
+
+@media ( max-width :768px) {
+	.confirmation-card {
+		padding: 25px;
+	}
+	.title {
+		font-size: 26px;
+	}
+	.detail-row {
+		flex-direction: column;
+		gap: 6px;
+	}
+}
+</style>
+</head>
+
+<body>
+
+	<div class="confirmation-card">
+
+		<div class="success-icon">
+			<i class="ti ti-circle-check"></i>
+		</div>
+
+		<h1 class="title">Appointment Confirmed</h1>
+
+		<p class="subtitle">Your appointment has been successfully
+			scheduled with MediCore Hospital.</p>
+
+		<div class="details-card">
+
+			<div class="detail-row">
+				<span class="detail-label">Appointment ID</span> <span
+					class="detail-value" id="appointmentId"></span>
+			</div>
+
+			<div class="detail-row">
+				<span class="detail-label">Patient Name</span> <span
+					class="detail-value" id="patientName"></span>
+			</div>
+
+			<div class="detail-row">
+				<span class="detail-label">Doctor</span> <span class="detail-value"
+					id="doctorName"></span>
+			</div>
+
+			<div class="detail-row">
+				<span class="detail-label">Specialization</span> <span
+					class="detail-value" id="specialization"></span>
+			</div>
+
+			<div class="detail-row">
+				<span class="detail-label">Appointment Date</span> <span
+					class="detail-value" id="appointmentDate"></span>
+			</div>
+
+			<div class="detail-row">
+				<span class="detail-label">Appointment Time</span> <span
+					class="detail-value" id="appointmentTime"></span>
+			</div>
+
+			<div class="detail-row">
+				<span class="detail-label">Status</span> <span class="detail-value"
+					id="status" style="color: #16a34a;"> </span>
+			</div>
+
+		</div>
+
+		<div class="info-box">
+			<i class="ti ti-info-circle"></i> Please arrive at the hospital at
+			least <strong>15 minutes before your scheduled appointment</strong>.
+			Carry any previous medical reports and prescriptions for
+			consultation.
+		</div>
+
+		<div class="btn-group">
+
+			<a href="UserDashboard.html" class="btn btn-primary"> <i
+				class="ti ti-home"></i> Back to Dashboard
+			</a>
+
+
+		</div>
+
+	</div>
+	<script>
+
+window.onload = function()
+{
+    fetch('ConfirmationDataServlet')
+        .then(response => response.json())
+        .then(data => {
+
+            document.getElementById(
+                'appointmentId').textContent =
+                data.appointmentId;
+
+            document.getElementById(
+                'patientName').textContent =
+                data.patientName;
+
+            document.getElementById(
+                'doctorName').textContent =
+                data.doctorName;
+
+            document.getElementById(
+                'specialization').textContent =
+                data.specialization;
+
+            document.getElementById(
+                'appointmentDate').textContent =
+                data.appointmentDate;
+
+            document.getElementById(
+                'appointmentTime').textContent =
+                data.appointmentTime;
+
+            document.getElementById(
+                'status').textContent =
+                data.status;
+        });
+}
+
+</script>
+</body>
+</html>
